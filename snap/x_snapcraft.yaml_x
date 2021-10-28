@@ -1,0 +1,74 @@
+name: imx8m-evk-kernel
+version: 5.10.35-1
+summary: IMX8m kernel for evk
+description: Linux kernel for NXP iMX8m EVK board
+type: kernel
+build-base: core18
+architectures:
+  - build-on: amd64
+    run-on: arm64
+confinement: strict
+grade: stable
+
+#confinement: devmode # use 'strict' once you have the right plugs and slots
+#grade: devel # must be 'stable' to release into candidate/stable channels
+
+parts:
+    kernel:
+        plugin: kernel
+        source: https://source.codeaurora.org/external/imx/linux-imx.git
+        source-type: git
+        source-tag: v5.10.35
+        kdefconfig: [defconfig]
+#        kconfigs:
+#            - CONFIG_LOCALVERSION="-boundary-snappy"
+#            - CONFIG_QCA_CLD_WLAN=m
+#            - CONFIG_CLD_HL_SDIO_CORE=y
+#            - CONFIG_PRIMA_WLAN_LFR=y
+#            - CONFIG_PRIMA_WLAN_OKC=y
+#            - CONFIG_WLAN_FEATURE_11W=y
+#            - CONFIG_QCOM_TDLS=y
+#            - CONFIG_QCOM_VOWIFI_11R=y
+#            - CONFIG_ENABLE_LINUX_REG=y
+#            - CONFIG_FEATURE_NAN=y
+#            - CONFIG_WLAN_SYNC_TSF=y
+#            - CONFIG_WLAN_UDP_RESPONSE_OFFLOAD=y
+#            - CONFIG_WLAN_WOW_PULSE=y
+        kernel-image-target: Image
+        kernel-device-trees:
+            - freescale/imx8mm-ddr4-evk
+            - freescale/imx8mm-ddr4-evk-pcie-ep
+            - freescale/imx8mm-ddr4-evk-revb
+            - freescale/imx8mm-ddr4-evk-revb-rm67191
+            - freescale/imx8mm-ddr4-evk-rm67191
+            - freescale/imx8mm-evk
+            - freescale/imx8mm-evk-8mic-revE
+            - freescale/imx8mm-evk-8mic-swpdm
+            - freescale/imx8mm-evk-ak4497
+            - freescale/imx8mm-evk-ak5558
+            - freescale/imx8mm-evk-audio-tdm
+            - freescale/imx8mm-evk-ecspi-slave
+            - freescale/imx8mm-evk-inmate
+            - freescale/imx8mm-evk-pcie-ep
+            - freescale/imx8mm-evk-qca-wifi
+            - freescale/imx8mm-evk-revb-qca-wifi
+            - freescale/imx8mm-evk-rm67191
+            - freescale/imx8mm-evk-root
+            - freescale/imx8mm-evk-rpmsg
+            - freescale/imx8mm-usd-wifi
+        build-packages:
+            - bison
+            - flex
+            - libssl-dev
+            - lzop
+            - u-boot-tools
+            - python-is-python3
+#        kernel-with-firmware: false
+#        kernel-initrd-core-base: core20
+#        after: [ firmware ]
+#    firmware:
+#        plugin: nil
+#        source: firmware
+#        override-build: |
+#            mkdir -p $SNAPCRAFT_PART_INSTALL/firmware
+#            cp -av ./* $SNAPCRAFT_PART_INSTALL/firmware/

@@ -1,0 +1,96 @@
+name: imx8kernel
+version: 5.4.x-2.1
+summary: NXP iMX8 kernel
+description: This is sample kernel snap for imx8m 5.4.24_2.1.0.
+type: kernel
+build-base: core18
+architectures:
+  - build-on: amd64
+    run-on: arm64
+confinement: strict
+grade: stable
+
+parts:
+  kernel:
+    # See 'snapcrafn plugins'
+    plugin: kernel
+    source: https://source.codeaurora.org/external/imx/linux-imx
+    source-depth: 1
+    source-type: git
+    #source-tag: rel_imx_5.4.24_2.1.0
+    source-branch: rel_imx_5.4.24_2.1.0
+    kdefconfig: [imx_v8_defconfig]
+    kconfigs:
+      - CONFIG_CONFIGFS_FS=y
+      - CONFIG_KEYS=y
+      - CONFIG_ENCRYPTED_KEYS=y
+      - CONFIG_BLK_DEV_LOOP=y
+      - CONFIG_BLK_DEV_LOOP_MIN_COUNT=256
+      - CONFIG_SQUASHFS=y
+      - CONFIG_SQUASHFS_FILE_DIRECT=y
+      - CONFIG_SQUASHFS_DECOMP_SINGLE=y
+      - CONFIG_SQUASHFS_XATTR=y
+      - CONFIG_SQUASHFS_ZLIB=y
+      - CONFIG_SQUASHFS_LZ4=y
+      - CONFIG_SQUASHFS_LZO=y
+      - CONFIG_SQUASHFS_XZ=y
+      - CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
+      - CONFIG_CGROUP_FREEZER=y
+      - CONFIG_NF_NAT_IPV4=m
+      - CONFIG_NF_NAT_NEEDED=y
+      - CONFIG_BLK_DEV_THROTTLING=y
+      - CONFIG_IOSCHED_CFQ=y
+      - CONFIG_CFQ_GROUP_IOSCHED=y
+      - CONFIG_NET_CLS_CGROUP=m
+      - CONFIG_CGROUP_NET_PRIO=y
+      - CONFIG_RT_GROUP_SCHED=m
+      - CONFIG_EXT4_FS_SECURITY=y
+      - CONFIG_AUFS_FS=m
+      - CONFIG_DM_THIN_PROVISIONING=m
+      - CONFIG_OVERLAY_FS_V1=y
+      - CONFIG_RTC_DRV_CMOS=m
+      - CONFIG_NVRAM=m
+      - CONFIG_CC_STACKPROTECTOR=y
+      - CONFIG_CC_STACKPROTECTOR_REGULAR=y
+      - CONFIG_DEBUG_RODATA=y
+      - CONFIG_DEBUG_SET_MODULE_RONX=y
+      - CONFIG_RFKILL_REGULATOR=m
+      - CONFIG_UEVENT_HELPER_PATH=""
+      - CONFIG_DEFAULT_SECURIT_APPARMOR=y
+      - CONFIG_TMPFS_XATTR=y
+      - CONFIG_TEMPFS_POSIX_ACL
+      - CONFIG_DEBUG_SET_MODULE_RONX
+      - CONFIG_DBUG_RODATA
+      - CONFIG_DEFAULT_SECURITY_APPARMOR
+
+    override-build: |
+      snapcraftctl build
+      cp $SNAPCRAFT_PART_BUILD/arch/arm64/boot/Image $SNAPCRAFT_PART_INSTALL
+
+    override-pull: |
+      snapcraftctl pull
+      set -e
+      git apply -v $SNAPCRAFT_PROJECT_DIR/patches/configs-linux.patch
+
+
+    kernel-with-firmware: false
+    #kernel-initrd-modules:
+     #- nls_iso8859-1
+     # - usb-storage
+
+       #  firmware:
+       #plugin: nil
+     #stage-packages:
+     # - linux-firmware
+     #organize:
+     # lib/firmware: firmware
+     # prime:
+     # - -usr
+     # - -lib
+     # build-packages:
+     # - cpio
+     # - libssl-dev
+   #   - build-essential
+   #   - flex
+   #   - bison
+
