@@ -72,8 +72,9 @@ parts:
       set -e
       git apply -v $SNAPCRAFT_PROJECT_DIR/patches/configs-linux.patch
 
-
-    kernel-with-firmware: false
+    kernel-with-firmware: False
+    kernel-image-target: Image
+    build-packages: [cpio, kmod, bc]
     #kernel-initrd-modules:
      #- nls_iso8859-1
      # - usb-storage
