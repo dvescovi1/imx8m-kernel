@@ -1,7 +1,9 @@
 name: imx8kernel
-version: 5.4.x-2.1
+#version: 5.4.x-2.1
+version: 5.10.x
 summary: NXP iMX8 kernel
-description: This is sample kernel snap for imx8m 5.4.24_2.1.0.
+#description: This is sample kernel snap for imx8m 5.4.24_2.1.0.
+description: This is sample kernel snap for imx8m 5.10.x.
 type: kernel
 build-base: core18
 architectures:
@@ -18,7 +20,8 @@ parts:
     source-depth: 1
     source-type: git
     #source-tag: rel_imx_5.4.24_2.1.0
-    source-branch: rel_imx_5.4.24_2.1.0
+    #source-branch: rel_imx_5.4.24_2.1.0
+    source-branch: lf-5.10.y
     kdefconfig: [imx_v8_defconfig]
     kconfigs:
       - CONFIG_CONFIGFS_FS=y
