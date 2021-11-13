@@ -1,7 +1,7 @@
 name: imx8kernel
 version: 5.10.x
 summary: NXP iMX8 kernel
-#description: This is sample kernel snap for imx8m 5.4.24_2.1.0.
+description: This is sample kernel snap for imx8m 5.10.x.
 type: kernel
 build-base: core18
 architectures:
